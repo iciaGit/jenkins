@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<!-- 이 XML 을 어떤 interface 하고 연결 할 것인가 -->
+<mapper namespace="kr.co.boot.dao.board.BoardDAO">
+	
+	<select id="list" resultType="kr.co.boot.dto.board.BoardDTO">
+		SELECT 
+			b.idx 
+			,b.subject
+			,b.user_name
+			,b.bHit
+			,b.reg_date
+			,(select COUNT(file_idx) FROM files f where f.idx = b.idx ) AS file_cnt
+		FROM bbs b ORDER BY idx DESC
+	</select>
+	
+	<insert id="writeBoard" 
+		useGeneratedKeys="true"
+		keyColumn="idx"
+		keyProperty="idx"
+		parameterType="kr.co.boot.dto.board.BoardDTO">
+		INSERT INTO bbs(subject,user_name,content)VALUES(#{subject},#{user_name},#{content})
+	</insert>
+	
+	<insert id="fileWrite">
+		INSERT INTO files(ori_filename, new_filename, idx) 
+			VALUES(#{param1},#{param2},#{param3})
+	</insert>
+	
+	<update id="upHit" parameterType="String">
+		UPDATE bbs SET bHit = bHit+1 WHERE idx = #{idx}
+	</update>
+	
+	<select id="detail" parameterType="String" resultType="kr.co.boot.dto.board.BoardDTO">
+		SELECT * FROM bbs WHERE idx = #{idx}
+	</select>	
+	
+	<select id="fileList" parameterType="String" resultType="kr.co.boot.dto.board.FileDTO">
+		SELECT ori_filename,new_filename FROM files WHERE idx = #{idx}
+	</select>
+	
+	<select id="getFileName" parameterType="String" resultType="String">
+		SELECT ori_filename FROM files WHERE new_filename = #{fileName}
+	</select>
+	
+	<delete id="delete" parameterType="String">
+		DELETE FROM bbs WHERE idx = #{idx}
+	</delete>
+
+
+</mapper>
