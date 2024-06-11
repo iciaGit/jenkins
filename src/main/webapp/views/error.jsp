@@ -10,6 +10,7 @@
 </head>
 <body>
 	${msg}
+	<a href="./">돌아가기</a>
 </body>
 <script>
 </script>
