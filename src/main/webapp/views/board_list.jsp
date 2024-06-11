@@ -11,7 +11,7 @@
 </style>
 </head>
 <body>
-	<button onclick = "location.href='write.go'">글쓰기</button>
+	<button onclick = "location.href='write.go'">글쓰기/파일업로드</button>
 	<table>
 		<tr>
 			<th>글번호</th>
